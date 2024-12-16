@@ -50,7 +50,7 @@ Returns the information about the current user that is logged in.
 * Require Authentication: false
 * Request
   * Method: GET
-  * Route path: /api/users/current
+  * Route path: /api/session
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -91,7 +91,7 @@ information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * Route path: /api/users/login
+  * Route path: /api/session
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -157,7 +157,7 @@ user's information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * Route path: /api/users/signup
+  * Route path: /api/users
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -233,7 +233,7 @@ Returns all the spots.
 * Require Authentication: false
 * Request
   * Method: GET
-  * Route path: /api/spots
+  * Route path: /api/session/spots
   * Body: none
 
 * Successful Response
@@ -620,7 +620,7 @@ Returns all the reviews written by the current user.
 * Require Authentication: true
 * Request
   * Method: GET
-  * Route path: /api/reviews/current-user
+  * Route path: /api/sessions/reviews
   * Body: none
 
 * Successful Response
@@ -968,7 +968,7 @@ Return all the bookings that the current user has made.
 * Require Authentication: true
 * Request
   * Method: GET
-  * Route path: /api/bookings
+  * Route path: /api/session/bookings
   * Body: none
 
 * Successful Response
