@@ -1,67 +1,69 @@
 'use strict';
-
-const { Model } = require('sequelize');
-
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Review extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      // A review belongs to a single user
-      Review.belongsTo(models.User, {
-        foreignKey: 'userId',
-        onDelete: 'CASCADE',
-      });
+      // define association here
 
-      // A review belongs to a single spot
-      Review.belongsTo(models.Spot, {
-        foreignKey: 'spotId',
-        onDelete: 'CASCADE',
-      });
+      Review.belongsTo(models.User, { foreignKey: 'userId' });
+      Review.belongsTo(models.Spot, { foreignKey: 'spotId' });
+      Review.hasMany(models.ReviewImage, { foreignKey: 'reviewId', onDelete: 'CASCADE', hooks: true });
 
-      // A review can have multiple images
-      Review.hasMany(models.ReviewImage, {
-        foreignKey: 'reviewId',
-        onDelete: 'CASCADE',
-        hooks: true,
-      });
     }
   }
-
-  Review.init(
-    {
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
-      spotId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Spots',
-          key: 'id',
-        },
-      },
-      review: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      stars: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          min: 1,
-          max: 5,
-        },
-      },
+  Review.init({
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true
     },
-    {
-      sequelize,
-      modelName: 'Review',
-    }
-  );
-
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "User",
+        key: "id"
+      }
+    },
+    spotId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Spot",
+        key: "id"
+      }
+    },
+    review: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    stars: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 1,
+        max: 5 
+      }
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false
+  }
+  }, {
+    sequelize,
+    modelName: 'Review',
+  });
   return Review;
 };

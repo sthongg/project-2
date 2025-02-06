@@ -1,24 +1,54 @@
 'use strict';
 
+const { ReviewImage } = require('../models');
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
+
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('ReviewImages', [
+  up: async (queryInterface, Sequelize) => {
+    return ReviewImage.bulkCreate([
       {
         reviewId: 1,
-        imageURL: 'https://example.com/review1-image1.jpg',
+        url: 'https://images.example.com/review1.jpg',
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        reviewId: 1,
+        url: 'https://images.example.com/review2.jpg',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         reviewId: 2,
-        imageURL: 'https://example.com/review2-image1.jpg',
+        url: 'https://images.example.com/review3.jpg',
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        reviewId: 3,
+        url: 'https://images.example.com/review4.jpg',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
-    ], {});
+    ]);
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('ReviewImages', null, {});
+  down: async (queryInterface, Sequelize) => {
+    options.tableName = 'ReviewImages';
+    const Op = Sequelize.Op;
+    await queryInterface.bulkDelete(options, {
+      url: {
+        [Op.in]: [
+          'https://images.example.com/review1.jpg',
+          'https://images.example.com/review2.jpg',
+          'https://images.example.com/review3.jpg',
+          'https://images.example.com/review4.jpg'
+        ]
+      }
+    });
   }
 };

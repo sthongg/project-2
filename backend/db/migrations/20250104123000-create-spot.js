@@ -2,9 +2,10 @@
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA; // Define your schema in options object
+  options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Spots', {
@@ -24,37 +25,31 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       address: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(150),
         allowNull: false
       },
       city: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(60),
         allowNull: false
       },
       state: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(60),
         allowNull: false
       },
       country: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(60),
         allowNull: false
       },
       lat: {
-        type: Sequelize.DECIMAL,
-        validate: {
-          min: -90,
-          max: 90
-        }
+        type: Sequelize.FLOAT,
+        allowNull: false
       },
       lng: {
-        type: Sequelize.DECIMAL,
-        validate: {
-          min: -180,
-          max: 180
-        }
+        type: Sequelize.FLOAT,
+        allowNull: false
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false
       },
       description: {
@@ -62,16 +57,8 @@ module.exports = {
         allowNull: false
       },
       price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.FLOAT,
         allowNull: false
-      },
-      avgRating: {
-        type: Sequelize.DECIMAL,
-        defaultValue: null,
-        validate: {
-          min: 0,
-          max: 5
-        }
       },
       createdAt: {
         allowNull: false,
@@ -85,9 +72,7 @@ module.exports = {
       }
     }, options);
   },
-
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Spots';
-    return queryInterface.dropTable(options);
+    await queryInterface.dropTable('Spots', options);
   }
 };
